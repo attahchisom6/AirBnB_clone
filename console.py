@@ -1,7 +1,10 @@
 #!/usr/bin/python3
 """Class to crate our command interpreter"""
 import cmd
+import json
 from models.base_model import BaseModel
+from models import storage
+from models.engine.file_storage import FileStorage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -30,7 +33,7 @@ class HBNBCommand(cmd.Cmd):
         """pressing the ENTER key wouldn't execute anything"""
         pass
 
-    def do_creaete(self, classname):
+    def do_create(self, classname):
         """this command will create a new instance of BaseModel"""
         if classname == "" or classname == None:
             print("** class name missing **")
@@ -53,18 +56,19 @@ class HBNBCommand(cmd.Cmd):
         if arg[0] == "" or arg[0] is None:
             print ("** class name missing **")
             return False
-        elif arg[0] is not in storage.data_classes():
+        elif not arg[0] in storage.data_classes():
             print("** class doesn't exist **")
 
         if len(arg) < 2:
             print("** instance id missing **")
 
-        all_obj = storage.all()
-        key = "{}.{}".format(arg[0], arg[1])
-        if key is not all_obj.keys():
-            print("** no instance found **")
         else:
-            print(all_obj[key])
+            all_obj = storage.all()
+            key = "{}.{}".format(arg[0], arg[1])
+            if not key in all_obj.keys():
+                print("** no instance found **")
+            else:
+                print(all_obj[key])
     def help_show(self):
         """help message"""
         print("Enter show command to display instances \
@@ -75,23 +79,24 @@ class HBNBCommand(cmd.Cmd):
         """Deletes an instance based on the class name and id
         save the change into the JSON file"""
         arg = line.split(" ")
-        if arg[0] is == "" or arg[0] is None:
+        if arg[0] == "" or arg[0] is None:
             print("** class name missing **")
-        elif arg[0] is not in storage.data_classes():
+        elif not arg[0] in storage.data_classes():
             print("** class doesn't exist **")
             return (False)
 
-        if len(arg) < 2:
+        elif len(arg) < 2:
             print("** instance id missing **")
             return (False)
 
-        all_obj = storage.all()
-        key = "{}.{}".format(arg[0], arg[1])
-        if not key in all_obj.keys():
-            print("** no instance found **")
         else:
-            del all_obj[key]
-            storage.save()
+            all_obj = storage.all()
+            key = "{}.{}".format(arg[0], arg[1])
+            if not key in all_obj.keys():
+                print("** no instance found **")
+            else:
+                del all_obj[key]
+                storage.save()
     def help_destroy(self):
         """help message"""
         print("Enter destroy command to delete an instance")
@@ -101,11 +106,11 @@ class HBNBCommand(cmd.Cmd):
         """Prints all string representation of all instances
         based or not on the class name"""
         if line != "":
-            arg = line.split()
+            arg = line.split(" ")
             if not arg[0] in storage.data_classes():
                 print("** class doesn't exist **")
             else:
-                str_obj = [str(obj) for key, obj in storage.all()
+                str_obj = [str(obj) for key, obj in storage.all().items()
                         if obj.__class__.__name__ == arg[0]]
                 print(str_obj)
         else:
@@ -121,19 +126,21 @@ class HBNBCommand(cmd.Cmd):
         """Updates an instance based on the class name and id by adding
         or updating attribute (save the change into the JSON file)"""
         arg = line.split(" ")
+        flag = 0
+
         if arg[0] is None or arg[0] == "":
             print("** class name missing **")
             return False
 
         try:
-            classname = arg[0]
+            classname = line.split()[0]
             eval("{}()".format(classname))
         except IndexError:
             print("** class doesn't exist **")
             return False
 
         try:
-            obj_idx = arg[1]
+            obj_idx = line.split()[1]
         except IndexError:
             print("** instance id missing **")
             return False
@@ -146,13 +153,13 @@ class HBNBCommand(cmd.Cmd):
             return False
 
         try:
-            attr_name = arg[2]
+            attr_name = line.split()[2]
         except IndexError:
             print("** attribute name missing **")
             return False
 
         try:
-            attr_value = arg[3]
+            attr_value = line.split()[3]
         except IndexError:
             print("** value missing **")
             return False
