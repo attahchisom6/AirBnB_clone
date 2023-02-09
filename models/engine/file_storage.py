@@ -54,7 +54,7 @@ class FileStorage:
             with open(self.__file_path, mode="r", encoding="utf-8") as f:
                 dictt = json.load(f)
                 for key, v in dictt.items():
-                    value = exec("{}(**v)".format(v['__class__']))
+                    value = eval("{}(**v)".format(v['__class__']))
                     self.__objects[key] = value
         except IOError:
             pass
