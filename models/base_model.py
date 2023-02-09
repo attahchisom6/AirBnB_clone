@@ -3,6 +3,7 @@
 subsequent classes"""
 import uuid
 from datetime import datetime
+import models
 
 
 class BaseModel:
@@ -13,7 +14,8 @@ class BaseModel:
         if not kwargs:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
-            self.updated_at = self.created_at
+            self.updated_at = datetime.now()
+            models.storage.new(self)
         else:
             self.__dict__ = kwargs
             date_format = "%Y-%m-%dT%H:%M:%S.%f"
@@ -32,6 +34,7 @@ class BaseModel:
         """updates the pubic instance attribute 'update_at' with the
         current datetime"""
         self.update_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """returns a key value pairs of all instances of the
