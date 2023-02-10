@@ -3,9 +3,15 @@
 of storing our data. It also serves as a source to provide
 information for the user
 """
-from models.base_model import BaseModel
-import json
 import os
+import json
+from models.user import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 
 
 class FileStorage:
@@ -58,3 +64,19 @@ class FileStorage:
                     self.__objects[key] = value
         except IOError:
             pass
+
+    def data_classes(self):
+        """returns a dictionary representation of our database
+        classes"""
+
+        data_classes = {
+                "BaseModel": BaseModel,
+                "User": User,
+                "State": State,
+                "City": City,
+                "Place": Place,
+                "Amenity": Amenity,
+                "Review": Review
+                }
+
+        return (data_classes)
