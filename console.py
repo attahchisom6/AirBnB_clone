@@ -153,56 +153,40 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line):
         """Updates an instance based on the class name and id by adding
         or updating attribute (save the change into the JSON file)"""
-        strr = []
+        strr = ""
         for args in line.split(","):
-            strr += args
+            strr = strr +  args
 
-        arg = split(strr)
+        arg = shlex.split(strr)
         if arg[0] is None or arg[0] == "":
             print("** class name missing **")
             return False
-
-        try:
-            classname = arg[0]
-            eval("{}()".format(classname))
-        except IndexError:
-            print("** class doesn't exist **")
-            return False
-
-        try:
-            obj_idx = arg[1]
-        except IndexError:
-            print("** instance id missing **")
-            return False
-
-        all_obj = storage.all()
-        try:
-            class_change = all_obj["{}.{}".format(classname, obj_idx)]
-        except IndexError:
-            print("** no instance found **")
-            return False
-
-        try:
-            attr_name = arg[2]
-        except IndexError:
-            print("** attribute name missing **")
-            return False
-
-        try:
-            attr_value = arg[3]
-        except IndexError:
-            print("** value missing **")
-            return False
-
-        if attr_value.isdecimal() is True:
-            setattr(class_change, attr_name, int(attr_value))
-            storage.save()
         else:
             try:
-                setattr(class_change, attr_name, float(attr_value))
-                storage.save()
-            except Exception:
-                setattr(class_change, attr_name, str(attr_value))
+                obj_idx = arg[1]
+            except IndexError:
+                print("** instance id missing **")
+            all_obj = storage.all()
+            for key, obj in all_obj.items():
+                classname = obj.__class__.__name__
+                try:
+                    classname == arg[0]
+                except IndexError:
+                    print("** class doesn't exist **")
+                try:
+                    obj_idx == obj.id
+                except IndexError:
+                    print("** no instance found **")
+                try:
+                    attr_name = arg[2]
+                except IndexError:
+                    print("** attribute name missing **")
+                try:
+                    attr_value = arg[3]
+                except IndexError:
+                    print("** value missing **")
+
+                setattr(obj, attr_name, attr_value)
                 storage.save()
 
     def help_update(self):
