@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-"""defining class of cities accessing our data"""
+"""
+Defines city
+"""
 from models.base_model import BaseModel
 
 
 class City(BaseModel):
-    """class of  all accessing cities"""
-
-    """public attributes"""
+    """defines city to look for"""
     state_id = ""
     name = ""

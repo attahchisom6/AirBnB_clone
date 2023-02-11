@@ -1,10 +1,8 @@
 # AirBnB_clone
 
-![air bnb clone](https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/263/HBTN-hbnb-Final.png)
 
 ## Description
 ![](https://camo.githubusercontent.com/97788fc5310cea2961d9d8dbfa9cb4b6aacd420eb1efb27372af451d7f04b7a7/68747470733a2f2f692e696d6775722e636f6d2f6f764d4e79455a2e706e67)
-
 ## Purpose
  The purpose of the project include:
 * How to create a Python package

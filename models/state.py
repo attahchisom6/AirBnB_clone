@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-"""defnining class for the state accessing our data"""
+"""
+Class that defines a state
+"""
 from models.base_model import BaseModel
 
 
 class State(BaseModel):
-    """class for accessing states"""
-
-    """public attributes"""
+    """class to create a state"""
     name = ""

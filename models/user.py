@@ -1,12 +1,12 @@
 #!/usr/bin/python3
-"""defining the class of users of this applicatiom"""
+"""
+User creation class
+"""
 from models.base_model import BaseModel
 
 
 class User(BaseModel):
-    """defining the user classes"""
-
-    """public attributes"""
+    """Defines attributes for user creation"""
     email = ""
     password = ""
     first_name = ""
