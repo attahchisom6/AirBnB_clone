@@ -161,33 +161,29 @@ class HBNBCommand(cmd.Cmd):
         if arg[0] is None or arg[0] == "":
             print("** class name missing **")
             return False
+
+        elif arg[0] not in storage.data_classes():
+            print("** class doesn't exist **")
+            return False
+
+        elif len(arg) == 1:
+            print("** instance id missing **")
+            return (false)
         else:
-            try:
-                obj_idx = arg[1]
-            except IndexError:
-                print("** instance id missing **")
             all_obj = storage.all()
             for key, obj in all_obj.items():
                 classname = obj.__class__.__name__
-                try:
-                    classname == arg[0]
-                except IndexError:
-                    print("** class doesn't exist **")
-                try:
-                    obj_idx == obj.id
-                except IndexError:
-                    print("** no instance found **")
-                try:
-                    attr_name = arg[2]
-                except IndexError:
-                    print("** attribute name missing **")
-                try:
-                    attr_value = arg[3]
-                except IndexError:
-                    print("** value missing **")
+                obj_idx = obj.id.split('""')
+                if classname == arg[0] and obj_idx == arg[1]:
+                    if len(arg) == 2:
+                        print("** attribute name missing **")
 
-                setattr(obj, attr_name, attr_value)
-                storage.save()
+                    elif len(arg) == 3:
+                        print(" ** value missing **")
+                    else:
+                        setattr(obj, arg[2], arg[3])
+                        storage.save()
+            print("** instance id missing **")
 
     def help_update(self):
         """help message"""
