@@ -13,7 +13,7 @@
 * How to manage datetime
 * UUID, `*args,` `**kwargs` and how to use it
 * How to handle named arguments in a function
-* hjihuiouhiuinilni
+* hjihuiouhiuiniln
 ## Command interpreter
 ## Interactive mode
 ```
