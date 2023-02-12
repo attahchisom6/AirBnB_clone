@@ -51,4 +51,4 @@ EOF  help  quit
 (hbnb) 
 $
 ```
-okkkk  k    k kkk
+okkkkkkkk
